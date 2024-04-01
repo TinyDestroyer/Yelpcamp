@@ -16,7 +16,7 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
-// const dbUrl = process.env.DB_URL;
+const dbUrl = process.env.DB_URL;
 const userRoutes = require('./routes/user');
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
@@ -29,7 +29,7 @@ mongoose.set('strictQuery', true);
 // 'mongodb://127.0.0.1:27017/yelp-camp'
 
 async function main() {
-    await mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp',{
+    await mongoose.connect(dbUrl,{
         useNewUrlParser: true,
         useUnifiedTopology: true,
     });
@@ -49,7 +49,7 @@ app.use(mongoSanitize());
 app.use(helmet({contentSecurityPolicy : false}));
 
 const store = new MongoDBStore({
-    url : 'mongodb://127.0.0.1:27017/yelp-camp',
+    url : dbUrl,
     secret: 'secret',
     touchAfter: 24*3600,
 });
